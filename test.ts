@@ -113,7 +113,8 @@ const mapBarsToChartData = (bars: number[]) => {
 const getTextReplacementByMarker = (text: string) => {
     return REPLACEMENTS.items.find(
         (item) =>
-            item.visualType === 'textBox' && text.includes(item.replacementMarker),
+            item.visualType === 'textBox' &&
+            text.includes(item.replacementMarker),
     ) as TextReplacement | undefined;
 };
 
@@ -175,7 +176,10 @@ const run = async () => {
                 }
 
                 const elementId = toElementId(sourceSlide.number, element);
-                const replacement = getNonTextReplacement(elementId, visualType);
+                const replacement = getNonTextReplacement(
+                    elementId,
+                    visualType,
+                );
                 if (!replacement) continue;
 
                 if (replacement.visualType === 'table') {

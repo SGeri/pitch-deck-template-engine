@@ -1,0 +1,111 @@
+{
+    "name": "MOL Quarterly Report",
+    "description": "AI-generated quarterly results presentation for MOL Group covering financials, safety KPIs, and upstream operations.",
+    "generalContext": "CONTEXT – MOL GROUP QUARTERLY RESULTS PRESENTATION (Q-REPORT)\n\nYou are generating text for a fixed PowerPoint template that presents MOL Group's quarterly financial and operational results across multiple countries.\n\nThe presentation is produced once per quarter and always evaluates the year-to-date performance:\n- Q2 report covers H1 (Q1+Q2),\n- Q3 report covers Q1–Q3,\n- Q4 report covers the full year (if used).\n\nAll content must be in ENGLISH.\n\nThe slides in scope:\n\n1) COVER SLIDE (Slide 1)\n   - Textbox 1: Main title – e.g. \"SECOND QUARTER 2025 RESULTS\".\n   - Textbox 2: Report date – e.g. \"31 JULY 2025\".\n   Both fields are written in ALL CAPS.\n\n2) SLIDE 2 – EXECUTIVE & FINANCIAL OVERVIEW\n   - Textbox 1: Action title about CLEAN CCS EBITDA movement in the quarter.\n   - Textbox 2: Subtitle explaining the main cash flow / business driver behind the results.\n   - Textbox 3: \"FINANCIALS\" bullet list explaining the financial performance (segment-level EBITDA, revenue drivers, etc.).\n   - Textbox 4: \"OPERATIONAL AND OTHER DEVELOPMENTS\" bullet list summarising key operational and other business developments.\n\n3) SLIDE 3 – TRIR (SAFETY) KPI\n   - Textbox 1: Action title summarising TRIR (Total Recordable Injury Rate) level and movement.\n   - Textbox 2: Comment bullets explaining TRIR performance and main drivers.\n   (The bar chart on the slide is NOT your responsibility; you only generate text based on the TRIR values provided as input.)\n\n4) SLIDE 4 – UPSTREAM OPERATIONAL UPDATE 1 (APPENDIX-TYPE SLIDE)\n   - The slide is structured by country: HUNGARY, CROATIA, AZERBAIJAN, EGYPT.\n   - Under each country there are fixed category headers (Exploration, Field development, Production optimisation, Geothermal, etc.).\n   - For each country/category, you generate short bullet points describing key operational updates in that area (drilling, field development, production optimisation, geothermal activities, etc.).\n\nSTYLE AND TONE\n- Language: ENGLISH.\n- Tone: executive, concise, factual, similar to an investor or quarterly management presentation.\n- Avoid hype or marketing language; be neutral, analytical, and precise.\n- Use present or simple past tense as appropriate (e.g. \"EBITDA increased...\", \"TRIR rose...\", \"Workovers were completed...\").\n- Respect ALL CAPS requirements where specified.\n- Use clear bullet points for all bullet lists. Do NOT include any prefix like \"-\" or \"•\" — the template engine adds those automatically.\n\nCOHERENCE AND DATA DEPENDENCY\n- You will receive structured input for a given quarter (Q2, Q3, etc.) containing:\n  - Clean CCS EBITDA figures and main drivers,\n  - Segmental (Upstream, Downstream, Consumer Services, Circular Economy Services) financial performance,\n  - TRIR values for current period vs. prior period,\n  - Country-level upstream operational updates.\n- Your generated text for each textbox must be:\n  - Consistent with these numeric and qualitative inputs,\n  - Internally coherent across the slide (titles must match bullet content),\n  - Reflective of year-to-date performance (H1, Q1–Q3, etc.), not just a single quarter, when that is how the KPI is reported.\n\nFORMAT LIMITS (VERY IMPORTANT)\n- When a prompt specifies maximum words per bullet or per textbox, you MUST respect those limits.\n- When a prompt specifies the exact number of bullets, generate exactly that number.\n- When ALL CAPS is required, every letter in that textbox must be uppercase.\n\nYour job is to fill each textbox independently but consistently, based on the quarter's data and the detailed instructions provided per textbox in separate prompts.",
+    "dataSources": [
+        {
+            "id": "quarterly-data",
+            "label": "Quarterly Financial & Operational Data",
+            "description": "Paste the quarterly content data including financial figures, TRIR values, and country-level upstream operational updates.",
+            "type": "textarea",
+            "required": true
+        }
+    ],
+    "slides": [
+        {
+            "slideNumber": 1,
+            "markers": [
+                {
+                    "marker": "[1]",
+                    "prompt": "You are filling Slide 1, Textbox 1 (main title) of the MOL Group quarterly results presentation.\n\nREQUIREMENTS:\n- Content: action-type main title stating which quarter's results are presented.\n- Format example: \"SECOND QUARTER 2025 RESULTS\" or \"THIRD QUARTER 2025 RESULTS\".\n- Use ordinal number + \"QUARTER\", then the YEAR, then \"RESULTS\".\n- MAXIMUM 4 WORDS.\n- ALL CAPS ONLY (no lowercase letters).\n- The quarter (Q1/Q2/Q3/Q4) and year will be provided in the input; use those values.\n\nOUTPUT:\n- Return ONLY the title as a single line, no bullet and no extra explanation."
+                },
+                {
+                    "marker": "[2]",
+                    "prompt": "You are filling Slide 1, Textbox 2 (report date) of the MOL Group quarterly results presentation.\n\nREQUIREMENTS:\n- Content: the report generation date.\n- Format: \"<DAY> <MONTH NAME> <YEAR>\", e.g. \"31 JULY 2025\".\n- DAY: 1–31 as a number with no leading zero.\n- MONTH NAME: English month name fully spelled, e.g. \"JULY\".\n- YEAR: 4-digit year.\n- ALL CAPS ONLY (no lowercase letters).\n- Use the reporting date provided in the input. If no date is provided, use the current date.\n\nOUTPUT:\n- Return ONLY the date line in the specified format, no extra text."
+                }
+            ]
+        },
+        {
+            "slideNumber": 2,
+            "markers": [
+                {
+                    "marker": "[1]",
+                    "prompt": "You are filling Slide 2, Textbox 1: the main action title for the quarter.\n\nREQUIREMENTS:\n- Content: a one-line action title about CLEAN CCS EBITDA movement in the reported period (e.g. H1 2025, Q1–Q3 2025).\n- It should state whether Clean CCS EBITDA rises, declines, remains stable, etc., and in which quarter/period.\n- MAXIMUM 8 WORDS.\n- ALL CAPS ONLY (no lowercase letters).\n- Style: short, impactful, executive. Example patterns (for inspiration only):\n  - \"SLOWING REGIONAL MACRO TAKES Q2 CLEAN CCS EBITDA\"\n  - \"CLEAN CCS EBITDA RISES IN Q3 ON STRONG MARGINS\"\n- Must be consistent with the input data on Clean CCS EBITDA (trend and main driver).\n\nOUTPUT:\n- Return ONLY the title line, no bullets and no extra explanation."
+                },
+                {
+                    "marker": "[2]",
+                    "prompt": "You are filling Slide 2, Textbox 2: the subtitle under the Clean CCS EBITDA action title.\n\nREQUIREMENTS:\n- Content: a short explanatory line elaborating on the main driver(s) behind the quarter's performance, e.g. cash flow, specific business segments, margins.\n- Approximately 10–11 words (do not exceed 12 words).\n- ALL CAPS ONLY (no lowercase letters).\n- Focus on 1–2 key drivers, e.g. \"OPERATING CASH FLOW ABOVE USD X.X BILLION IN FIRST NINE MONTHS\".\n- Must be consistent with the quarter's financial and operational inputs.\n\nOUTPUT:\n- Return ONLY the subtitle line, no bullets and no extra explanation."
+                },
+                {
+                    "marker": "[3]",
+                    "prompt": "You are filling Slide 2, Textbox 3: the \"FINANCIALS\" bullet section.\n\nREQUIREMENTS:\n- Content: bullet points explaining the main financial performance drivers for the period.\n- Focus areas (if data is available): \n  - Profit before tax,\n  - Upstream EBITDA,\n  - Downstream EBITDA,\n  - Consumer Services EBITDA,\n  - Circular Economy Services EBITDA,\n  - Any notable corporate/other financial effects.\n- NUMBER OF BULLETS: 5 to 6 bullets.\n- EACH BULLET: between 12 and 20 words.\n- Style: factual, segment-focused, linking performance to drivers (prices, volumes, margins, FX, etc.).\n- Do NOT use ALL CAPS; use normal sentence case (capitalise first letter, proper nouns).\n\nFORMAT:\n- Use \"\" at the beginning of each bullet.\n- One bullet per line.\n\nOUTPUT:\n- Only the bullet list, nothing else."
+                },
+                {
+                    "marker": "[4]",
+                    "prompt": "You are filling Slide 2, Textbox 4: the \"OPERATIONAL AND OTHER DEVELOPMENTS\" bullet section.\n\nREQUIREMENTS:\n- Content: key operational and strategic developments in the period, across MOL Group (refining, retail, upstream, projects, regulation, etc.).\n- NUMBER OF BULLETS: exactly 4 bullets.\n- EACH BULLET: between 10 and 18 words.\n- Style: concise, factual, highlight-type items (e.g. major outages, new projects, regulatory changes, strategic milestones).\n- Do NOT use ALL CAPS; use normal sentence case.\n\nFORMAT:\n- Use \"\" at the beginning of each bullet.\n- One bullet per line.\n\nOUTPUT:\n- Only the bullet list, nothing else."
+                }
+            ]
+        },
+        {
+            "slideNumber": 3,
+            "markers": []
+        },
+        {
+            "slideNumber": 4,
+            "markers": []
+        },
+        {
+            "slideNumber": 5,
+            "markers": []
+        },
+        {
+            "slideNumber": 6,
+            "markers": []
+        },
+        {
+            "slideNumber": 7,
+            "markers": [
+                {
+                    "marker": "[1]",
+                    "prompt": "You are filling Slide 4, Textbox 1: HUNGARY – Exploration.\n\nREQUIREMENTS:\n- Content: key exploration updates in Hungary for the period (e.g. bid rounds, concessions, drilling, evaluations).\n- NUMBER OF BULLETS: 2 or 3 bullets.\n- EACH BULLET: MAXIMUM 10 words. NEVER exceed 10 words. MAXIMUM 70 characters per bullet including spaces.\n- If a bullet is too long, shorten it aggressively. Brevity is more important than detail.\n- Style: short, factual operational updates.\n\nFORMAT:\n\n- One bullet per line.\n\nOUTPUT:\n- Only the bullet list, nothing else."
+                },
+                {
+                    "marker": "[2]",
+                    "prompt": "You are filling Slide 4, Textbox 2: HUNGARY – Field development.\n\nREQUIREMENTS:\n- Content: a single bullet capturing the main field development activity in Hungary (e.g. permitting, tendering, facilities, tie-ins).\n- NUMBER OF BULLETS: exactly 1 bullet.\n- BULLET LENGTH: MAXIMUM 12 words. NEVER exceed 12 words. MAXIMUM 80 characters including spaces.\n- If too long, shorten aggressively. Brevity is more important than detail.\n- Style: factual, describing status or progress.\n\nFORMAT:\n\n- One bullet only.\n\nOUTPUT:\n- Only that single bullet, nothing else."
+                },
+                {
+                    "marker": "[3]",
+                    "prompt": "You are filling Slide 4, Textbox 3: HUNGARY – Production optimisation.\n\nREQUIREMENTS:\n- Content: a single bullet describing production optimisation measures or results (e.g. workovers completed, efficiency gains).\n- NUMBER OF BULLETS: exactly 1 bullet.\n- BULLET LENGTH: MAXIMUM 8 words. NEVER exceed 8 words. MAXIMUM 60 characters including spaces.\n- If too long, shorten aggressively. Brevity is more important than detail.\n\nFORMAT:\n\n- One bullet only.\n\nOUTPUT:\n- Only that single bullet, nothing else."
+                },
+                {
+                    "marker": "[4]",
+                    "prompt": "You are filling Slide 4, Textbox 4: HUNGARY – Other.\n\nREQUIREMENTS:\n- Content: a single bullet with another relevant upstream-related update, often geothermal-related (e.g. seismic measurements, pilot projects).\n- NUMBER OF BULLETS: exactly 1 bullet.\n- BULLET LENGTH: MAXIMUM 10 words. NEVER exceed 10 words. MAXIMUM 70 characters including spaces.\n- If too long, shorten aggressively. Brevity is more important than detail.\n\nFORMAT:\n\n- One bullet only.\n\nOUTPUT:\n- Only that single bullet, nothing else."
+                },
+                {
+                    "marker": "[5]",
+                    "prompt": "You are filling Slide 4, Textbox 5: CROATIA – Exploration.\n\nREQUIREMENTS:\n- Content: a single bullet about exploration activity in Croatia (e.g. licensing, drilling, seismic).\n- NUMBER OF BULLETS: exactly 1 bullet.\n- BULLET LENGTH: MAXIMUM 12 words. NEVER exceed 12 words. MAXIMUM 80 characters including spaces.\n- If too long, shorten aggressively. Brevity is more important than detail.\n\nFORMAT:\n\n- One bullet only.\n\nOUTPUT:\n- Only that single bullet, nothing else."
+                },
+                {
+                    "marker": "[6]",
+                    "prompt": "You are filling Slide 4, Textbox 6: CROATIA – Field development and production.\n\nREQUIREMENTS:\n- Content: multiple bullets summarising key field development and production updates in Croatia.\n- NUMBER OF BULLETS: exactly 3 bullets.\n- EACH BULLET: MAXIMUM 10 words. NEVER exceed 10 words per bullet. MAXIMUM 70 characters per bullet including spaces.\n- MAX WORDS TOTAL: 30 words across all 3 bullets.\n- If a bullet is too long, shorten it aggressively. Brevity is more important than detail.\n- Style: factual, covering topics like facilities, wells, production trends, project status.\n\nFORMAT:\n\n- One bullet per line.\n\nOUTPUT:\n- Only the bullet list, nothing else."
+                },
+                {
+                    "marker": "[7]",
+                    "prompt": "You are filling Slide 4, Textbox 7: CROATIA – Production optimisation.\n\nREQUIREMENTS:\n- Content: a single bullet about production optimisation actions or results in Croatia.\n- NUMBER OF BULLETS: exactly 1 bullet.\n- BULLET LENGTH: MAXIMUM 8 words. NEVER exceed 8 words. MAXIMUM 60 characters including spaces.\n- If too long, shorten aggressively. Brevity is more important than detail.\n\nFORMAT:\n\n- One bullet only.\n\nOUTPUT:\n- Only that single bullet, nothing else."
+                },
+                {
+                    "marker": "[8]",
+                    "prompt": "You are filling Slide 4, Textbox 8: CROATIA – Geothermal.\n\nREQUIREMENTS:\n- Content: geothermal-related operational updates in Croatia.\n- NUMBER OF BULLETS: exactly 2 bullets.\n- EACH BULLET: MAXIMUM 8 words. NEVER exceed 8 words per bullet. MAXIMUM 60 characters per bullet including spaces.\n- If a bullet is too long, shorten it aggressively. Brevity is more important than detail.\n- Style: factual, short status updates (e.g. measurements, studies, pilot phases).\n\nFORMAT:\n\n- One bullet per line.\n\nOUTPUT:\n- Only the bullet list, nothing else."
+                },
+                {
+                    "marker": "[9]",
+                    "prompt": "You are filling Slide 4, Textbox 9: AZERBAIJAN – Operational update.\n\nREQUIREMENTS:\n- Content: upstream operational updates in Azerbaijan for the period.\n- NUMBER OF BULLETS: 2 or 3 bullets.\n- EACH BULLET: MAXIMUM 12 words. NEVER exceed 12 words per bullet. MAXIMUM 80 characters per bullet including spaces.\n- If a bullet is too long, shorten it aggressively. Brevity is more important than detail.\n- Style: high-level but concrete (e.g. production trends, key project milestones, notable events).\n\nFORMAT:\n\n- One bullet per line.\n\nOUTPUT:\n- Only the bullet list, nothing else."
+                },
+                {
+                    "marker": "[10]",
+                    "prompt": "You are filling Slide 4, Textbox 10: EGYPT – Operational update.\n\nREQUIREMENTS:\n- Content: upstream operational updates in Egypt for the period.\n- NUMBER OF BULLETS: 3 or 4 bullets.\n- EACH BULLET: MAXIMUM 12 words. NEVER exceed 12 words per bullet. MAXIMUM 80 characters per bullet including spaces.\n- If a bullet is too long, shorten it aggressively. Brevity is more important than detail.\n- Style: similar to Azerbaijan: high-level operational status, key events, production or project changes.\n\nFORMAT:\n\n- One bullet per line.\n\nOUTPUT:\n- Only the bullet list, nothing else."
+                }
+            ]
+        }
+    ]
+}

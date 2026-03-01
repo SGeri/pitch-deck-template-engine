@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: 'Web App Template',
-    description: 'Web App Template - Customer Support Portal',
+    title: 'Slides Generator',
+    description: 'AI-powered presentation builder',
 };
 
 export default function RootLayout({

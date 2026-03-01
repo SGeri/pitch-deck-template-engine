@@ -1,0 +1,46 @@
+export interface MarkerDefinition {
+    marker: string;
+    prompt: string;
+}
+
+export interface SlideDefinition {
+    slideNumber: number;
+    markers: MarkerDefinition[];
+}
+
+export interface DataSourceDefinition {
+    id: string;
+    label: string;
+    description: string;
+    type: 'textarea' | 'file';
+    required: boolean;
+    acceptedFileTypes?: string[];
+}
+
+export interface WorkflowMetadata {
+    name: string;
+    description: string;
+    generalContext: string;
+    dataSources: DataSourceDefinition[];
+    slides: SlideDefinition[];
+}
+
+export interface WorkflowRegistryEntry {
+    id: string;
+    name: string;
+    description: string;
+    templatePath: string;
+    metadataPath: string;
+}
+
+export interface DataSourceInput {
+    id: string;
+    type: 'textarea' | 'file';
+    content: string;
+}
+
+export interface WorkflowSummary {
+    id: string;
+    name: string;
+    description: string;
+}
