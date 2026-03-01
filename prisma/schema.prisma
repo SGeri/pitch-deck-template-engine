@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  MEMBER
+  ADMIN
+}
+
+model User {
+  id            String   @id
+  name          String
+  email         String
+  emailVerified Boolean  @default(false)
+  image         String?
+  role          UserRole @default(MEMBER)
+
+  sessions       Session[]
+  accounts       Account[]
+  estateManagers EstateManager[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([email])
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  ipAddress String?
+  userAgent String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([token])
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([identifier])
+}
+
+model PhoneNumber {
+  id          String  @id @default(cuid())
+  phoneNumber String  @unique
+  profileName String?
+  whatsappId  String?
+
+  messages Message[]
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reservations Reservation[]
+
+  @@index([phoneNumber])
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+model Message {
+  id               String           @id @default(cuid())
+  twilioMessageSid String?          @unique // unique for inbound messages, null for outbound messages
+  direction        MessageDirection
+  body             String?
+  mediaUrls        Json? // Array<{ contentType: string, url: string }>
+
+  phoneNumberId String
+  phoneNumber   PhoneNumber @relation(fields: [phoneNumberId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([phoneNumberId])
+  @@index([twilioMessageSid])
+  @@index([createdAt])
+}
+
+model EstateManager {
+  id String @id @default(cuid())
+
+  guestyClientId     String
+  guestyClientSecret String
+
+  accessToken          String
+  accessTokenExpiresAt DateTime
+
+  users      User[]
+  properties Property[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id String @id @default(cuid())
+
+  guestyListingId String
+
+  estateManagerId String
+  estateManager   EstateManager @relation(fields: [estateManagerId], references: [id], onDelete: Cascade)
+
+  reservations Reservation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reservation {
+  id String @id @default(cuid())
+
+  guestyReservationId String
+
+  checkInDate  DateTime
+  checkOutDate DateTime
+
+  guestName               String
+  guestLanguagePreference String
+  guestsCount             Int
+
+  guestPhoneNumberId String?
+  guestPhoneNumber   PhoneNumber? @relation(fields: [guestPhoneNumberId], references: [id], onDelete: Cascade)
+
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
