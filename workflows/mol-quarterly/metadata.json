@@ -1,7 +1,7 @@
 {
     "name": "MOL Quarterly Report",
     "description": "AI-generated quarterly results presentation for MOL Group covering financials, safety KPIs, and upstream operations.",
-    "generalContext": "CONTEXT – MOL GROUP QUARTERLY RESULTS PRESENTATION (Q-REPORT)\n\nYou are generating text for a fixed PowerPoint template that presents MOL Group's quarterly financial and operational results across multiple countries.\n\nThe presentation is produced once per quarter and always evaluates the year-to-date performance:\n- Q2 report covers H1 (Q1+Q2),\n- Q3 report covers Q1–Q3,\n- Q4 report covers the full year (if used).\n\nAll content must be in ENGLISH.\n\nThe slides in scope:\n\n1) COVER SLIDE (Slide 1)\n   - Textbox 1: Main title – e.g. \"SECOND QUARTER 2025 RESULTS\".\n   - Textbox 2: Report date – e.g. \"31 JULY 2025\".\n   Both fields are written in ALL CAPS.\n\n2) SLIDE 2 – EXECUTIVE & FINANCIAL OVERVIEW\n   - Textbox 1: Action title about CLEAN CCS EBITDA movement in the quarter.\n   - Textbox 2: Subtitle explaining the main cash flow / business driver behind the results.\n   - Textbox 3: \"FINANCIALS\" bullet list explaining the financial performance (segment-level EBITDA, revenue drivers, etc.).\n   - Textbox 4: \"OPERATIONAL AND OTHER DEVELOPMENTS\" bullet list summarising key operational and other business developments.\n\n3) SLIDE 3 – TRIR (SAFETY) KPI\n   - Textbox 1: Action title summarising TRIR (Total Recordable Injury Rate) level and movement.\n   - Textbox 2: Comment bullets explaining TRIR performance and main drivers.\n   (The bar chart on the slide is NOT your responsibility; you only generate text based on the TRIR values provided as input.)\n\n4) SLIDE 4 – UPSTREAM OPERATIONAL UPDATE 1 (APPENDIX-TYPE SLIDE)\n   - The slide is structured by country: HUNGARY, CROATIA, AZERBAIJAN, EGYPT.\n   - Under each country there are fixed category headers (Exploration, Field development, Production optimisation, Geothermal, etc.).\n   - For each country/category, you generate short bullet points describing key operational updates in that area (drilling, field development, production optimisation, geothermal activities, etc.).\n\nSTYLE AND TONE\n- Language: ENGLISH.\n- Tone: executive, concise, factual, similar to an investor or quarterly management presentation.\n- Avoid hype or marketing language; be neutral, analytical, and precise.\n- Use present or simple past tense as appropriate (e.g. \"EBITDA increased...\", \"TRIR rose...\", \"Workovers were completed...\").\n- Respect ALL CAPS requirements where specified.\n- Use clear bullet points for all bullet lists. Do NOT include any prefix like \"-\" or \"•\" — the template engine adds those automatically.\n\nCOHERENCE AND DATA DEPENDENCY\n- You will receive structured input for a given quarter (Q2, Q3, etc.) containing:\n  - Clean CCS EBITDA figures and main drivers,\n  - Segmental (Upstream, Downstream, Consumer Services, Circular Economy Services) financial performance,\n  - TRIR values for current period vs. prior period,\n  - Country-level upstream operational updates.\n- Your generated text for each textbox must be:\n  - Consistent with these numeric and qualitative inputs,\n  - Internally coherent across the slide (titles must match bullet content),\n  - Reflective of year-to-date performance (H1, Q1–Q3, etc.), not just a single quarter, when that is how the KPI is reported.\n\nFORMAT LIMITS (VERY IMPORTANT)\n- When a prompt specifies maximum words per bullet or per textbox, you MUST respect those limits.\n- When a prompt specifies the exact number of bullets, generate exactly that number.\n- When ALL CAPS is required, every letter in that textbox must be uppercase.\n\nYour job is to fill each textbox independently but consistently, based on the quarter's data and the detailed instructions provided per textbox in separate prompts.",
+    "generalContext": "CONTEXT – MOL GROUP QUARTERLY RESULTS PRESENTATION (EXTENDED)\n\nYou are generating text for a fixed PowerPoint template that presents MOL Group's quarterly financial and operational results.\n\nIMPORTANT PERIOD LOGIC\n- The template structure is based on the Q3 deck.\n- The content you generate must reflect Q4 2025 (full-year) data provided in the inputs.\n\nLANGUAGE\n- All content must be in ENGLISH.\n\nSLIDES IN SCOPE\n1) COVER SLIDE (Slide 1)\n   - Textbox 1: Main title – e.g. \"FOURTH QUARTER 2025 RESULTS\".\n   - Textbox 2: Report date – e.g. \"7 NOVEMBER 2025\".\n   Both fields are written in ALL CAPS.\n\n2) EXECUTIVE & FINANCIAL OVERVIEW (Slide 2)\n   - Textbox 1: Action title about CLEAN CCS EBITDA movement.\n   - Textbox 2: Subtitle explaining the key driver(s) behind results.\n   - Textbox 3: FINANCIALS bullets (segment-level drivers).\n   - Textbox 4: OPERATIONAL AND OTHER DEVELOPMENTS bullets.\n   Textbox 1 and 2 are ALL CAPS.\n\n3) NET INCOME WATERFALL (Slide 3)\n   - Textbox 1: Action title summarising full-year net income outcome.\n   Textbox is ALL CAPS.\n\n4) BELOW-EBITDA-LINE DRIVERS (5 BAR CHARTS) (Slide 4)\n   - Textbox 1: Action title summarising below-the-line/financial items.\n   - Textbox 2–6: One short comment per bar chart (5 charts).\n   Textbox 1 is ALL CAPS.\n\n5) OPERATING CASH FLOW WATERFALL (Slide 5)\n   - Textbox 1: Action title summarising operating cash flow movement.\n   - Textbox 2: Subtitle summarising capex coverage / key cash insight.\n   - Textbox 3: 3 short comment lines.\n   Textbox 1 and 2 are ALL CAPS.\n\n6) LEVERAGE & NET DEBT (Slide 6)\n   - Textbox 1: Action title summarising leverage/net debt position.\n   - Textbox 2: Subtitle highlighting balance sheet flexibility.\n   - Textbox 3: 2 short comment lines.\n   Textbox 1 and 2 are ALL CAPS.\n\n7) UPSTREAM OPERATIONAL UPDATE 1 (Slide 7)\n   - Structured by country: HUNGARY, CROATIA, AZERBAIJAN, EGYPT.\n   - Under each country there are fixed category headers.\n   - For each country/category, generate short operational update lines.\n\nSTYLE AND TONE\n- Tone: executive, concise, factual, similar to an investor / quarterly management presentation.\n- Avoid hype/marketing language; be neutral, analytical, and precise.\n- Use present or simple past tense as appropriate.\n\nFORMAT RULES\n- Do NOT include any bullet prefix like \"-\" or \"•\". The template engine adds bullet markers automatically.\n- If a field requires multiple bullets/lines: output ONE sentence per line.\n- Respect ALL CAPS requirements.\n\nNUMBERS & UNITS\n- USD is always uppercase.\n- Percentages have no space: \"10%\".\n- In TITLES: use MN/BN (uppercase) if you include magnitude.\n- In body/comment text: use mn/bn (lowercase).\n\nCOHERENCE\n- Titles must match the supporting bullet/comment content.\n- Comments must be consistent with the numeric/qualitative inputs.\n\nYour job is to fill each textbox independently but consistently, based on the inputs and the per-field prompts below.",
     "dataSources": [
         {
             "id": "quarterly-data",
@@ -48,19 +48,75 @@
         },
         {
             "slideNumber": 3,
-            "markers": []
+            "markers": [
+                {
+                    "marker": "[1]",
+                    "prompt": "You are filling Slide 3, Textbox 1 (net income waterfall slide title).\n\nREQUIREMENTS:\n- Action title summarising the net income outcome.\n- 4–6 words.\n- ALL CAPS ONLY.\n- Use MN/BN in title if you include magnitude.\n\nOUTPUT:\n- Return ONLY the title as a single line."
+                }
+            ]
         },
         {
             "slideNumber": 4,
-            "markers": []
+            "markers": [
+                {
+                    "marker": "[1]",
+                    "prompt": "You are filling Slide 4, Textbox 1 (slide title for below-the-line drivers).\n\nREQUIREMENTS:\n- Action title summarising below-the-EBITDA-line/financial items.\n- 4–6 words.\n- ALL CAPS ONLY.\n\nOUTPUT:\n- Return ONLY the title as a single line."
+                },
+                {
+                    "marker": "[2]",
+                    "prompt": "You are filling Slide 4, Textbox 2 (comment for bar chart 1: Clean CCS effect, vessel gain/loss).\n\nREQUIREMENTS:\n- EXACTLY 1 sentence.\n- 8–12 words.\n- Normal sentence case.\n- Do NOT include any bullet prefix.\n\nOUTPUT:\n- Return ONLY the sentence."
+                },
+                {
+                    "marker": "[3]",
+                    "prompt": "You are filling Slide 4, Textbox 3 (comment for bar chart 2: DD and A).\n\nREQUIREMENTS:\n- EXACTLY 1 sentence.\n- 8–12 words.\n- Normal sentence case.\n- Do NOT include any bullet prefix.\n\nOUTPUT:\n- Return ONLY the sentence."
+                },
+                {
+                    "marker": "[4]",
+                    "prompt": "You are filling Slide 4, Textbox 4 (comment for bar chart 3: Total financial expense (+)/gain (-)).\n\nREQUIREMENTS:\n- EXACTLY 1 sentence.\n- 8–12 words.\n- Normal sentence case.\n- Do NOT include any bullet prefix.\n\nOUTPUT:\n- Return ONLY the sentence."
+                },
+                {
+                    "marker": "[5]",
+                    "prompt": "You are filling Slide 4, Textbox 5 (comment for bar chart 4: Income from associates).\n\nREQUIREMENTS:\n- EXACTLY 1 sentence.\n- 8–12 words.\n- Normal sentence case.\n- Do NOT include any bullet prefix.\n\nOUTPUT:\n- Return ONLY the sentence."
+                },
+                {
+                    "marker": "[6]",
+                    "prompt": "You are filling Slide 4, Textbox 6 (comment for bar chart 5: Income tax expenses).\n\nREQUIREMENTS:\n- EXACTLY 1 sentence.\n- 8–12 words.\n- Normal sentence case.\n- Do NOT include any bullet prefix.\n\nOUTPUT:\n- Return ONLY the sentence."
+                }
+            ]
         },
         {
             "slideNumber": 5,
-            "markers": []
+            "markers": [
+                {
+                    "marker": "[1]",
+                    "prompt": "You are filling Slide 5, Textbox 1 (operating cash flow waterfall slide title).\n\nREQUIREMENTS:\n- Action title summarising operating cash flow movement.\n- 4–6 words.\n- ALL CAPS ONLY.\n- Use MN/BN in title if you include magnitude.\n\nOUTPUT:\n- Return ONLY the title as a single line."
+                },
+                {
+                    "marker": "[2]",
+                    "prompt": "You are filling Slide 5, Textbox 2 (subtitle).\n\nREQUIREMENTS:\n- Summarise capex coverage or key cash insight.\n- 6–8 words.\n- ALL CAPS ONLY.\n\nOUTPUT:\n- Return ONLY the subtitle as a single line."
+                },
+                {
+                    "marker": "[3]",
+                    "prompt": "You are filling Slide 5, Textbox 3 (comment block).\n\nREQUIREMENTS:\n- EXACTLY 3 sentences.\n- Each sentence: 6–10 words.\n- Normal sentence case.\n- Use mn/bn in body text (lowercase).\n- Do NOT include any bullet prefix.\n\nOUTPUT:\n- One sentence per line, nothing else."
+                }
+            ]
         },
         {
             "slideNumber": 6,
-            "markers": []
+            "markers": [
+                {
+                    "marker": "[1]",
+                    "prompt": "You are filling Slide 6, Textbox 1 (net debt/leverage slide title).\n\nREQUIREMENTS:\n- Action title summarising leverage/net debt position.\n- 4–6 words.\n- ALL CAPS ONLY.\n\nOUTPUT:\n- Return ONLY the title as a single line."
+                },
+                {
+                    "marker": "[2]",
+                    "prompt": "You are filling Slide 6, Textbox 2 (subtitle).\n\nREQUIREMENTS:\n- Highlight balance sheet flexibility or leverage profile.\n- 6–8 words.\n- ALL CAPS ONLY.\n\nOUTPUT:\n- Return ONLY the subtitle as a single line."
+                },
+                {
+                    "marker": "[3]",
+                    "prompt": "You are filling Slide 6, Textbox 3 (comments).\n\nREQUIREMENTS:\n- EXACTLY 2 sentences.\n- Each sentence: 10–13 words.\n- Sentence 1 must include \"year-on-year\" (hyphenated).\n- Sentence 2 must include net debt to EBITDA and gearing values.\n- Normal sentence case.\n- Do NOT include any bullet prefix.\n\nOUTPUT:\n- One sentence per line, nothing else."
+                }
+            ]
         },
         {
             "slideNumber": 7,
