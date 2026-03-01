@@ -3,17 +3,29 @@ import { generateText } from 'ai';
 import { aiModel } from '@/lib/ai';
 import type { ReplacementEntry } from '@/lib/slides/types';
 import type {
+    ChartMarkerDefinition,
     DataSourceInput,
+    MarkerDefinition,
     WorkflowMetadata,
 } from '@/lib/workflows/types';
 
 import { parseFileContent } from './file-parser';
 
-export interface GeneratedContent {
+export interface GeneratedTextContent {
+    type: 'text';
     slideNumber: number;
     marker: string;
     value: string;
 }
+
+export interface GeneratedChartContent {
+    type: 'chart';
+    slideNumber: number;
+    elementId: string;
+    value: string;
+}
+
+export type GeneratedContent = GeneratedTextContent | GeneratedChartContent;
 
 async function resolveDataSourceContent(
     ds: DataSourceInput,
@@ -52,6 +64,10 @@ async function generateMarkerContent(
     return text.trim();
 }
 
+function isChartMarker(marker: MarkerDefinition): marker is ChartMarkerDefinition {
+    return marker.type === 'chart';
+}
+
 export async function generateAllContent(
     metadata: WorkflowMetadata,
     dataSources: DataSourceInput[],
@@ -61,8 +77,7 @@ export async function generateAllContent(
     const tasks = metadata.slides.flatMap((slide) =>
         slide.markers.map((marker) => ({
             slideNumber: slide.slideNumber,
-            marker: marker.marker,
-            prompt: marker.prompt,
+            marker,
         })),
     );
 
@@ -71,11 +86,22 @@ export async function generateAllContent(
             const value = await generateMarkerContent(
                 metadata.generalContext,
                 dataSourceContent,
-                task.prompt,
+                task.marker.prompt,
             );
+
+            if (isChartMarker(task.marker)) {
+                return {
+                    type: 'chart' as const,
+                    slideNumber: task.slideNumber,
+                    elementId: task.marker.elementId,
+                    value,
+                };
+            }
+
             return {
+                type: 'text' as const,
                 slideNumber: task.slideNumber,
-                marker: task.marker,
+                marker: task.marker.marker,
                 value,
             };
         }),
@@ -84,13 +110,31 @@ export async function generateAllContent(
     return results;
 }
 
+function parseChartBars(raw: string): number[] {
+    return raw
+        .split(',')
+        .map((s) => parseFloat(s.trim()))
+        .filter((n) => !Number.isNaN(n));
+}
+
 export function assembleReplacements(
     generatedContent: GeneratedContent[],
 ): ReplacementEntry[] {
-    return generatedContent.map((item) => ({
-        visualType: 'textBox' as const,
-        slideNumber: item.slideNumber,
-        replacementMarker: item.marker,
-        value: item.value,
-    }));
+    return generatedContent.map((item): ReplacementEntry => {
+        if (item.type === 'chart') {
+            return {
+                visualType: 'chart' as const,
+                slideNumber: item.slideNumber,
+                elementId: item.elementId,
+                bars: parseChartBars(item.value),
+            };
+        }
+
+        return {
+            visualType: 'textBox' as const,
+            slideNumber: item.slideNumber,
+            replacementMarker: item.marker,
+            value: item.value,
+        };
+    });
 }

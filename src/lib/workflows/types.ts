@@ -1,7 +1,16 @@
-export interface MarkerDefinition {
+export interface TextMarkerDefinition {
+    type?: 'text';
     marker: string;
     prompt: string;
 }
+
+export interface ChartMarkerDefinition {
+    type: 'chart';
+    elementId: string;
+    prompt: string;
+}
+
+export type MarkerDefinition = TextMarkerDefinition | ChartMarkerDefinition;
 
 export interface SlideDefinition {
     slideNumber: number;

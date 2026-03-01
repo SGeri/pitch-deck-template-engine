@@ -14,7 +14,7 @@ export const WORKFLOW_REGISTRY: WorkflowRegistryEntry[] = [
             ROOT_DIR,
             'workflows',
             'mol-quarterly',
-            'Dummy_Report_with_MOL_Slides_v4.pptx',
+            'template.pptx',
         ),
         metadataPath: path.join(
             ROOT_DIR,
