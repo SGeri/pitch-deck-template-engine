@@ -9,7 +9,8 @@ import {
 import PptxGenJS from 'pptxgenjs';
 
 const TEMPLATE_NAME = 'demoTemplate';
-const SOURCE_FILE = 'demo2.pptx';
+const SOURCE_FILE =
+    'workflows/mol-quarterly/Dummy_Report_with_MOL_Slides_v4.pptx';
 const OUTPUT_FILE = 'demo2.replaced.pptx';
 const ALLOWED_VISUAL_TYPES = new Set<string>(['chart', 'table', 'textBox']);
 
@@ -154,6 +155,8 @@ const run = async () => {
     let totalAppliedReplacements = 0;
 
     for (const sourceSlide of sourceSlides) {
+        if (sourceSlide.number !== 3) continue;
+
         const targetElements = sourceSlide.elements.filter((element) =>
             ALLOWED_VISUAL_TYPES.has(element.visualType),
         );
