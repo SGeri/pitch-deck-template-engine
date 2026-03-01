@@ -18,8 +18,7 @@ type MatrixValue = string | number;
 
 type TextReplacement = {
     visualType: 'textBox';
-    elementId: string;
-    toBeReplaced: string;
+    replacementMarker: string;
     value: string;
 };
 
@@ -45,26 +44,22 @@ const REPLACEMENTS: ReplacementData = {
     items: [
         {
             visualType: 'textBox',
-            elementId: '1:Google Shape;54;p13',
-            toBeReplaced: '[1]',
+            replacementMarker: '[1]',
             value: 'Quarterly Business Review',
         },
         {
             visualType: 'textBox',
-            elementId: '1:Google Shape;55;p13',
-            toBeReplaced: '[2]',
+            replacementMarker: '[2]',
             value: 'Q1 2026',
         },
         {
             visualType: 'textBox',
-            elementId: '2:Google Shape;61;p14',
-            toBeReplaced: '[3]',
+            replacementMarker: '[3]',
             value: 'Revenue Table',
         },
         {
             visualType: 'textBox',
-            elementId: '3:Google Shape;61;p14',
-            toBeReplaced: '[4]',
+            replacementMarker: '[4]',
             value: 'Revenue Chart',
         },
         {
@@ -115,11 +110,20 @@ const mapBarsToChartData = (bars: number[]) => {
     };
 };
 
-const getReplacementById = (elementId: string, visualType: VisualType) => {
+const getTextReplacementByMarker = (text: string) => {
     return REPLACEMENTS.items.find(
         (item) =>
-            item.elementId === elementId && item.visualType === visualType,
-    );
+            item.visualType === 'textBox' && text.includes(item.replacementMarker),
+    ) as TextReplacement | undefined;
+};
+
+const getNonTextReplacement = (elementId: string, visualType: VisualType) => {
+    return REPLACEMENTS.items.find(
+        (item) =>
+            item.visualType !== 'textBox' &&
+            item.elementId === elementId &&
+            item.visualType === visualType,
+    ) as TableReplacement | ChartReplacement | undefined;
 };
 
 const run = async () => {
@@ -129,6 +133,8 @@ const run = async () => {
     const automizer = new Automizer({
         templateDir: rootDir,
         outputDir: rootDir,
+        removeExistingSlides: true,
+        cleanup: true,
         pptxGenJs: new PptxGenJS(),
     });
 
@@ -154,22 +160,12 @@ const run = async () => {
         presentation.addSlide(TEMPLATE_NAME, sourceSlide.number, (slide) => {
             for (const element of targetElements) {
                 const visualType = element.visualType as VisualType;
-                const elementId = toElementId(sourceSlide.number, element);
                 const selector = toElementSelector(element);
-                const replacement = getReplacementById(elementId, visualType);
 
-                if (!replacement) {
-                    continue;
-                }
-
-                if (replacement.visualType === 'textBox') {
+                if (visualType === 'textBox') {
                     const currentText = element.getText().join('\n');
-                    if (!currentText.includes(replacement.toBeReplaced)) {
-                        console.log(
-                            `Skipping text replacement for ${elementId} because "${replacement.toBeReplaced}" was not found.`,
-                        );
-                        continue;
-                    }
+                    const replacement = getTextReplacementByMarker(currentText);
+                    if (!replacement) continue;
 
                     slide.modifyElement(selector, [
                         ModifyTextHelper.setText(replacement.value),
@@ -177,6 +173,10 @@ const run = async () => {
                     totalAppliedReplacements += 1;
                     continue;
                 }
+
+                const elementId = toElementId(sourceSlide.number, element);
+                const replacement = getNonTextReplacement(elementId, visualType);
+                if (!replacement) continue;
 
                 if (replacement.visualType === 'table') {
                     slide.modifyElement(selector, [
