@@ -95,7 +95,6 @@ export default function HomePage() {
 
                     {step === 1 && metadata && (
                         <DataSourcesStep
-                            definitions={metadata.dataSources}
                             initialValues={dataSources}
                             onBack={() => setStep(0)}
                             onNext={(ds) => {

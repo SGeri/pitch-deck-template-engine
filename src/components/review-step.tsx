@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import type { DataSourceInput, WorkflowMetadata } from '@/lib/workflows/types';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, FileText, Sparkles, Type } from 'lucide-react';
 
 interface ReviewStepProps {
     metadata: WorkflowMetadata;
@@ -41,23 +41,34 @@ export function ReviewStep({
             <Separator />
 
             <div className="flex flex-col gap-4">
-                <h4 className="text-sm font-medium">Data Sources</h4>
-                {dataSources.map((ds) => {
-                    const def = metadata.dataSources.find(
-                        (d) => d.id === ds.id,
-                    );
-                    const preview =
-                        ds.content.length > MAX_PREVIEW_LENGTH
-                            ? `${ds.content.slice(0, MAX_PREVIEW_LENGTH)}...`
-                            : ds.content;
+                <h4 className="text-sm font-medium">
+                    Data Sources ({dataSources.length})
+                </h4>
+                {dataSources.map((ds, index) => {
+                    const isFile = ds.type === 'file';
+                    const preview = isFile
+                        ? `File: ${ds.fileName ?? 'unknown'}`
+                        : ds.content.length > MAX_PREVIEW_LENGTH
+                          ? `${ds.content.slice(0, MAX_PREVIEW_LENGTH)}...`
+                          : ds.content;
 
                     return (
-                        <div key={ds.id} className="flex flex-col gap-1.5">
+                        <div
+                            key={ds.id}
+                            className="flex flex-col gap-1.5"
+                        >
                             <div className="flex items-center gap-2">
+                                {isFile ? (
+                                    <FileText className="text-muted-foreground size-3.5" />
+                                ) : (
+                                    <Type className="text-muted-foreground size-3.5" />
+                                )}
                                 <span className="text-sm font-medium">
-                                    {def?.label ?? ds.id}
+                                    Source #{index + 1}
                                 </span>
-                                <Badge variant="outline">{ds.type}</Badge>
+                                <Badge variant="outline">
+                                    {isFile ? ds.fileName ?? 'file' : 'text'}
+                                </Badge>
                             </div>
                             <pre className="bg-muted text-muted-foreground max-h-40 overflow-auto rounded-md p-3 text-xs whitespace-pre-wrap">
                                 {preview}

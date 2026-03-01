@@ -1,7 +1,13 @@
+import { generateText } from 'ai';
+
 import { aiModel } from '@/lib/ai';
 import type { ReplacementEntry } from '@/lib/slides/types';
-import type { DataSourceInput, WorkflowMetadata } from '@/lib/workflows/types';
-import { generateText } from 'ai';
+import type {
+    DataSourceInput,
+    WorkflowMetadata,
+} from '@/lib/workflows/types';
+
+import { parseFileContent } from './file-parser';
 
 export interface GeneratedContent {
     slideNumber: number;
@@ -9,11 +15,22 @@ export interface GeneratedContent {
     value: string;
 }
 
-function assembleDataSourceContent(dataSources: DataSourceInput[]): string {
-    return dataSources
-        .map((ds) => ds.content)
-        .filter(Boolean)
-        .join('\n\n---\n\n');
+async function resolveDataSourceContent(
+    ds: DataSourceInput,
+): Promise<string> {
+    if (ds.type === 'file' && ds.fileName) {
+        return parseFileContent(ds.content, ds.fileName);
+    }
+    return ds.content;
+}
+
+async function assembleDataSourceContent(
+    dataSources: DataSourceInput[],
+): Promise<string> {
+    const resolved = await Promise.all(
+        dataSources.map(resolveDataSourceContent),
+    );
+    return resolved.filter(Boolean).join('\n\n---\n\n');
 }
 
 async function generateMarkerContent(
@@ -39,7 +56,7 @@ export async function generateAllContent(
     metadata: WorkflowMetadata,
     dataSources: DataSourceInput[],
 ): Promise<GeneratedContent[]> {
-    const dataSourceContent = assembleDataSourceContent(dataSources);
+    const dataSourceContent = await assembleDataSourceContent(dataSources);
 
     const tasks = metadata.slides.flatMap((slide) =>
         slide.markers.map((marker) => ({

@@ -37,6 +37,7 @@ export interface DataSourceInput {
     id: string;
     type: 'textarea' | 'file';
     content: string;
+    fileName?: string;
 }
 
 export interface WorkflowSummary {
