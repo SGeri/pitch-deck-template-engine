@@ -1,6 +1,7 @@
 'use client';
 
 import type { GenerationResult } from '@/actions/generate';
+import Sidebar from '@/components/Sidebar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,7 +15,6 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
-import Sidebar from '@/components/Sidebar';
 import {
     useGeneratePresentation,
     useWorkflowMetadata,
@@ -61,6 +61,11 @@ type FormValues = z.infer<typeof formSchema>;
 
 function toId() {
     return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+function getFileExtension(fileName: string): string {
+    const dot = fileName.lastIndexOf('.');
+    return dot >= 0 ? fileName.slice(dot).toLowerCase() : '';
 }
 
 function toDataSourceInputs(values: FormValues): DataSourceInput[] {
@@ -219,11 +224,7 @@ export default function MolQuarterlyReportPage() {
                                 </div>
 
                                 <div className="flex flex-wrap gap-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        asChild
-                                    >
+                                    <Button variant="outline" size="sm" asChild>
                                         <a
                                             href={`/api/workflow-template/${WORKFLOW_ID}`}
                                             download
@@ -233,11 +234,7 @@ export default function MolQuarterlyReportPage() {
                                             <Download className="size-3" />
                                         </a>
                                     </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        asChild
-                                    >
+                                    <Button variant="outline" size="sm" asChild>
                                         <a
                                             href={`/api/workflow-metadata/${WORKFLOW_ID}`}
                                             download
@@ -380,17 +377,23 @@ export default function MolQuarterlyReportPage() {
                                                                 }
                                                             />
                                                             {currentFileName && (
-                                                                <p className="text-xs text-[var(--text-tertiary)]">
-                                                                    Loaded:{' '}
-                                                                    {
-                                                                        currentFileName
-                                                                    }
-                                                                </p>
+                                                                <div className="flex items-center gap-2">
+                                                                    <FileText className="size-3.5 text-[var(--text-tertiary)]" />
+                                                                    <span className="text-xs text-[var(--text-tertiary)]">
+                                                                        {currentFileName}
+                                                                    </span>
+                                                                    <Badge
+                                                                        variant="secondary"
+                                                                        className="text-[10px] px-1.5 py-0"
+                                                                    >
+                                                                        {getFileExtension(currentFileName)}
+                                                                    </Badge>
+                                                                </div>
                                                             )}
                                                             <p className="text-xs text-[var(--text-tertiary)]">
-                                                                Supported: .txt
-                                                                (other formats
-                                                                coming soon)
+                                                                Supported: .txt,
+                                                                .pdf, .xlsx,
+                                                                .docx
                                                             </p>
                                                         </div>
                                                     )}
@@ -486,8 +489,8 @@ function GenerationStatus({
                             Generating presentation...
                         </p>
                         <p className="mt-1 text-sm text-[var(--text-secondary)]">
-                            AI is writing content for each slide. This may take a
-                            minute.
+                            AI is writing content for each slide. This may take
+                            a minute.
                         </p>
                     </div>
                 </div>
