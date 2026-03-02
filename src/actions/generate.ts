@@ -1,6 +1,7 @@
 'use server';
 
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile, unlink } from 'node:fs/promises';
+import path from 'node:path';
 
 import {
     assembleReplacements,
@@ -17,7 +18,7 @@ const OUTPUT_DIR = getGeneratedOutputDir();
 
 export interface GenerationResult {
     filename: string;
-    downloadUrl: string;
+    fileBase64: string;
 }
 
 export async function generatePresentationAction(
@@ -50,8 +51,15 @@ export async function generatePresentationAction(
         outputFileName,
     });
 
+    const outputPath = path.join(OUTPUT_DIR, outputFileName);
+    const fileBuffer = await readFile(outputPath);
+    const fileBase64 = fileBuffer.toString('base64');
+
+    // Best-effort cleanup of ephemeral output file.
+    await unlink(outputPath).catch(() => undefined);
+
     return {
         filename: outputFileName,
-        downloadUrl: `/api/download/${outputFileName}`,
+        fileBase64,
     };
 }

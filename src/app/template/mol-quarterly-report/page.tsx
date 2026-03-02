@@ -166,6 +166,30 @@ async function readFileContent(file: File): Promise<string> {
     );
 }
 
+function downloadPptxFromBase64(filename: string, fileBase64: string): void {
+    const binary = atob(fileBase64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], {
+        type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    });
+    const blobUrl = URL.createObjectURL(blob);
+
+    const anchor = document.createElement('a');
+    anchor.href = blobUrl;
+    anchor.download = filename;
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+
+    window.setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+}
+
 function toDataSourceInputs(values: FormValues): DataSourceInput[] {
     return values.dataSources.map((ds) => ({
         id: toId(),
@@ -1243,13 +1267,17 @@ function GenerationStatus({
                             Start Over
                         </Button>
                         <Button
-                            asChild
+                            type="button"
                             className="bg-[var(--mol-red)] hover:bg-[var(--mol-red-hover)]"
+                            onClick={() =>
+                                downloadPptxFromBase64(
+                                    result.filename,
+                                    result.fileBase64,
+                                )
+                            }
                         >
-                            <a href={result.downloadUrl} download>
-                                <Download className="size-4" />
-                                Download PPTX
-                            </a>
+                            <Download className="size-4" />
+                            Download PPTX
                         </Button>
                     </div>
                 </div>

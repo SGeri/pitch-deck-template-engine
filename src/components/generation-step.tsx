@@ -5,6 +5,30 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { AlertCircle, CheckCircle2, Download, RotateCcw } from 'lucide-react';
 
+function downloadPptxFromBase64(filename: string, fileBase64: string): void {
+    const binary = atob(fileBase64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], {
+        type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    });
+    const blobUrl = URL.createObjectURL(blob);
+
+    const anchor = document.createElement('a');
+    anchor.href = blobUrl;
+    anchor.download = filename;
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+
+    window.setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+}
+
 interface GenerationStepProps {
     isGenerating: boolean;
     result: GenerationResult | null;
@@ -75,11 +99,17 @@ export function GenerationStep({
                         <RotateCcw className="size-4" />
                         Start Over
                     </Button>
-                    <Button asChild>
-                        <a href={result.downloadUrl} download>
-                            <Download className="size-4" />
-                            Download PPTX
-                        </a>
+                    <Button
+                        type="button"
+                        onClick={() =>
+                            downloadPptxFromBase64(
+                                result.filename,
+                                result.fileBase64,
+                            )
+                        }
+                    >
+                        <Download className="size-4" />
+                        Download PPTX
                     </Button>
                 </div>
             </div>
