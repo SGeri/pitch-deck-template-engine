@@ -3,18 +3,18 @@ import { z } from 'zod';
 
 export const env = createEnv({
     server: {
-        DATABASE_URL: z.string().min(1),
+        DATABASE_URL: z.string().min(1).optional(),
 
-        OPENAI_API_KEY: z.string().min(1),
+        OPENAI_API_KEY: z.string().min(1).optional(),
 
-        BETTER_AUTH_SECRET: z.string().min(1),
-        BETTER_AUTH_URL: z.string().min(1),
+        BETTER_AUTH_SECRET: z.string().min(1).optional(),
+        BETTER_AUTH_URL: z.string().min(1).optional(),
 
-        AWS_REGION: z.string().min(1),
-        AWS_ACCESS_KEY_ID: z.string().min(1),
-        AWS_SECRET_ACCESS_KEY: z.string().min(1),
-        S3_ENDPOINT: z.string().min(1),
-        S3_BUCKET_NAME: z.string().min(1),
+        AWS_REGION: z.string().min(1).optional(),
+        AWS_ACCESS_KEY_ID: z.string().min(1).optional(),
+        AWS_SECRET_ACCESS_KEY: z.string().min(1).optional(),
+        S3_ENDPOINT: z.string().min(1).optional(),
+        S3_BUCKET_NAME: z.string().min(1).optional(),
         S3_FORCE_PATH_STYLE: z.string().optional(),
     },
     client: {},
