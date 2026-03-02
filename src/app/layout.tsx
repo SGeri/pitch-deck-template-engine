@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: 'Slides Generator',
-    description: 'AI-powered presentation builder',
+    title: 'Content Generator',
+    description: 'AI-powered content generator',
 };
 
 export default function RootLayout({
