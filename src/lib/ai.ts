@@ -2,7 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import type { ModelMessage } from 'ai';
 import { generateText } from 'ai';
 
-export const aiModel = openai('gpt-5-mini');
+export const aiModel = openai('gpt-5.2');
 
 export interface GenerateResponseOptions {
     messages: ModelMessage[];
