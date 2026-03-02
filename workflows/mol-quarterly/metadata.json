@@ -93,27 +93,27 @@
                 },
                 {
                     "type": "chart",
-                    "elementId": "0DAC5825-F814-B13C-D52D-9D91D92EC8DD",
+                    "elementId": "B41546C3-2D9C-F41D-4325-D440A09DDBFB",
                     "prompt": "You are providing the numerical data for Slide 4, Bar Chart 1: \"Clean CCS effect, gain / loss (USD mn)\".\n\nThe chart has exactly 3 bars in this order:\n1. Q3 2024\n2. Q2 2025\n3. Q3 2025\n\nREQUIREMENTS:\n- Extract the exact USD mn value for each of the 3 periods above from the input data.\n- These represent the Clean CCS effect (gain or loss) for each quarter.\n- Negative values must have a minus sign (e.g. -74).\n- Use integers only (no decimals).\n\nOUTPUT:\n- Return ONLY 3 comma-separated integers in the exact order above.\n- Example format: -18, -74, -90\n- No labels, no units, no extra text."
                 },
                 {
                     "type": "chart",
-                    "elementId": "6681DBAE-096F-9621-B468-E58A0235E407",
+                    "elementId": "83D6DFE2-483C-DD9B-22B4-0F156B803F1A",
                     "prompt": "You are providing the numerical data for Slide 4, Bar Chart 2: \"DD&A (USD mn)\".\n\nThe chart has exactly 3 bars in this order:\n1. Q3 2024\n2. Q2 2025\n3. Q3 2025\n\nREQUIREMENTS:\n- Extract the exact USD mn DD&A (depreciation, depletion and amortisation) value for each of the 3 periods above from the input data.\n- Values are typically positive.\n- Use integers only (no decimals).\n\nOUTPUT:\n- Return ONLY 3 comma-separated integers in the exact order above.\n- Example format: 341, 413, 404\n- No labels, no units, no extra text."
                 },
                 {
                     "type": "chart",
-                    "elementId": "7CFC0749-6AED-2F9E-8DF0-1EF001118D9A",
+                    "elementId": "25B0F240-B093-8749-A6AA-643FD8818E02",
                     "prompt": "You are providing the numerical data for Slide 4, Bar Chart 3: \"Total Financial expense (+) / gain (-) (USD mn)\".\n\nThe chart has exactly 3 bars in this order:\n1. Q3 2024\n2. Q2 2025\n3. Q3 2025\n\nREQUIREMENTS:\n- Extract the exact USD mn value for total financial expense (positive) or gain (negative) for each of the 3 periods above from the input data.\n- Negative values must have a minus sign.\n- Use integers only (no decimals).\n\nOUTPUT:\n- Return ONLY 3 comma-separated integers in the exact order above.\n- Example format: 0, -33, -4\n- No labels, no units, no extra text."
                 },
                 {
                     "type": "chart",
-                    "elementId": "3834794D-CD1B-33B4-DD6A-2DF736729F81",
+                    "elementId": "31395C44-5AA7-531A-4B5D-45894C4102E5",
                     "prompt": "You are providing the numerical data for Slide 4, Bar Chart 4: \"Income from associates (USD mn)\".\n\nThe chart has exactly 3 bars in this order:\n1. Q3 2024\n2. Q2 2025\n3. Q3 2025\n\nREQUIREMENTS:\n- Extract the exact USD mn income from associates value for each of the 3 periods above from the input data.\n- Negative values must have a minus sign.\n- Use integers only (no decimals).\n\nOUTPUT:\n- Return ONLY 3 comma-separated integers in the exact order above.\n- Example format: 16, 5, 17\n- No labels, no units, no extra text."
                 },
                 {
                     "type": "chart",
-                    "elementId": "04EE5D08-0C90-618F-8ACC-E60C52A74369",
+                    "elementId": "850BBD9D-4133-4390-AEBF-AF1F29896117",
                     "prompt": "You are providing the numerical data for Slide 4, Bar Chart 5: \"Income tax expenses (USD mn)\".\n\nThe chart has exactly 3 bars in this order:\n1. Q3 2024\n2. Q2 2025\n3. Q3 2025\n\nREQUIREMENTS:\n- Extract the exact USD mn income tax expense value for each of the 3 periods above from the input data.\n- These are the total income tax expense figures (not deferred tax only).\n- Values are typically positive.\n- Use integers only (no decimals).\n\nOUTPUT:\n- Return ONLY 3 comma-separated integers in the exact order above.\n- Example format: 120, 127, 184\n- No labels, no units, no extra text."
                 }
             ]
@@ -135,7 +135,7 @@
                 },
                 {
                     "type": "chart",
-                    "elementId": "45AE5C34-507A-E5E6-171E-A10E8206F5D2",
+                    "elementId": "EC1550EE-ED9A-307A-C441-D8ACF59BD481",
                     "prompt": "You are providing the numerical data for the Slide 5 waterfall chart: \"OPERATING CASH FLOW FOR TOTAL OPERATION IN FY 2025 (USD mn)\".\n\nThe chart has exactly 8 columns in this fixed order:\n1. Profit before tax Cont. Operation\n2. DD&A\n3. Income tax paid\n4. Other\n5. Operating CF before WC\n6. Change in WC\n7. Operating CF\n8. Organic CAPEX\n\nREQUIREMENTS:\n- Extract the exact USD mn value for each of the 8 columns above from the input data.\n- Negative values must have a minus sign (e.g. -487). Income tax paid and Other are typically negative (cash outflows).\n- Use integers only (no decimals).\n- The values must be arithmetically consistent:\n  - Column 1 + Column 2 + Column 3 + Column 4 = Column 5\n  - Column 5 + Column 6 = Column 7\n  - Column 8 is a standalone comparison value (Organic CAPEX).\n\nOUTPUT:\n- Return ONLY 8 comma-separated integers in the exact column order above.\n- Example format: 1285, 1154, -487, -141, 1811, 366, 2177, 840\n- No labels, no units, no extra text."
                 }
             ]
