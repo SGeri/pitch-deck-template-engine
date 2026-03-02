@@ -19,16 +19,27 @@ type VisualType = 'textBox' | 'table' | 'chart';
 const TEMPLATE_NAME = 'sourceTemplate';
 const ALLOWED_VISUAL_TYPES = new Set<string>(['chart', 'table', 'textBox']);
 
+function normalizeMarkerText(text: string): string {
+    return text
+        .normalize('NFKC')
+        .replace(/\u00A0/g, ' ')
+        .replace(/\r/g, '')
+        .replace(/\[\s*(\d+)\s*\]/g, '[$1]')
+        .trim();
+}
+
 function getTextReplacementForSlide(
     text: string,
     slideNumber: number,
     replacements: ReplacementEntry[],
 ): TextReplacement | undefined {
+    const normalizedText = normalizeMarkerText(text);
+
     return replacements.find(
         (item): item is TextReplacement =>
             item.visualType === 'textBox' &&
             item.slideNumber === slideNumber &&
-            text.includes(item.replacementMarker),
+            normalizedText.includes(normalizeMarkerText(item.replacementMarker)),
     );
 }
 
@@ -146,25 +157,43 @@ export async function generatePresentation({
         );
 
         presentation.addSlide(TEMPLATE_NAME, sourceSlide.number, (slide) => {
+            // Text placeholders can have duplicated shape names on a slide.
+            // Modify them by marker-content on target XML, not by selector.
+            const textReplacementsForSlide = replacements.filter(
+                (item): item is TextReplacement =>
+                    item.visualType === 'textBox' &&
+                    item.slideNumber === sourceSlide.number,
+            );
+            if (textReplacementsForSlide.length) {
+                slide.modify((doc) => {
+                    const shapes = doc.getElementsByTagName('p:sp');
+                    for (let i = 0; i < shapes.length; i++) {
+                        const shape = shapes.item(i);
+                        if (!shape) continue;
+
+                        const textRuns = shape.getElementsByTagName('a:t');
+                        if (!textRuns.length) continue;
+
+                        const rawText = Array.from(textRuns)
+                            .map((node) => node.textContent ?? '')
+                            .join('\n');
+                        const replacement = getTextReplacementForSlide(
+                            rawText,
+                            sourceSlide.number,
+                            textReplacementsForSlide,
+                        );
+                        if (!replacement) continue;
+
+                        ModifyTextHelper.setText(replacement.value)(shape);
+                        totalApplied += 1;
+                    }
+                });
+            }
+
             for (const element of targetElements) {
                 const visualType = element.visualType as VisualType;
                 const selector = element.name;
-
-                if (visualType === 'textBox') {
-                    const currentText = element.getText().join('\n');
-                    const replacement = getTextReplacementForSlide(
-                        currentText,
-                        sourceSlide.number,
-                        replacements,
-                    );
-                    if (!replacement) continue;
-
-                    slide.modifyElement(selector, [
-                        ModifyTextHelper.setText(replacement.value),
-                    ]);
-                    totalApplied += 1;
-                    continue;
-                }
+                if (visualType === 'textBox') continue;
 
                 const elementId = toElementId(sourceSlide.number, element);
                 const replacement = getNonTextReplacement(
