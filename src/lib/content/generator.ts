@@ -23,6 +23,8 @@ export interface GeneratedChartContent {
     slideNumber: number;
     elementId: string;
     value: string;
+    isExtended?: boolean;
+    labels?: string[];
 }
 
 export type GeneratedContent = GeneratedTextContent | GeneratedChartContent;
@@ -64,7 +66,9 @@ async function generateMarkerContent(
     return text.trim();
 }
 
-function isChartMarker(marker: MarkerDefinition): marker is ChartMarkerDefinition {
+function isChartMarker(
+    marker: MarkerDefinition,
+): marker is ChartMarkerDefinition {
     return marker.type === 'chart';
 }
 
@@ -95,6 +99,8 @@ export async function generateAllContent(
                     slideNumber: task.slideNumber,
                     elementId: task.marker.elementId,
                     value,
+                    isExtended: task.marker.isExtended,
+                    labels: task.marker.labels,
                 };
             }
 
@@ -110,7 +116,7 @@ export async function generateAllContent(
     return results;
 }
 
-function parseChartBars(raw: string): number[] {
+function parseChartValues(raw: string): number[] {
     return raw
         .split(',')
         .map((s) => parseFloat(s.trim()))
@@ -126,7 +132,9 @@ export function assembleReplacements(
                 visualType: 'chart' as const,
                 slideNumber: item.slideNumber,
                 elementId: item.elementId,
-                bars: parseChartBars(item.value),
+                values: parseChartValues(item.value),
+                isExtended: item.isExtended,
+                labels: item.labels,
             };
         }
 

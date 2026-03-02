@@ -63,11 +63,14 @@ function mapMatrixToTableData(matrix: MatrixValue[][]) {
     };
 }
 
-function mapBarsToChartData(bars: number[]) {
+function mapCategoriesToChartData(
+    values: number[],
+    labels?: string[],
+) {
     return {
         series: [{ label: 'Series 1' }],
-        categories: bars.map((value, index) => ({
-            label: `Bar ${index + 1}`,
+        categories: values.map((value, index) => ({
+            label: labels?.[index] ?? `Category ${index + 1}`,
             values: [value],
         })),
     };
@@ -148,11 +151,15 @@ export async function generatePresentation({
                     continue;
                 }
 
-                slide.modifyElement(selector, [
-                    ModifyChartHelper.setChartData(
-                        mapBarsToChartData(replacement.bars),
-                    ),
-                ]);
+                const chartData = mapCategoriesToChartData(
+                    replacement.values,
+                    replacement.labels,
+                );
+                const chartModifier = replacement.isExtended
+                    ? ModifyChartHelper.setExtendedChartData(chartData)
+                    : ModifyChartHelper.setChartData(chartData);
+
+                slide.modifyElement(selector, [chartModifier]);
                 totalApplied += 1;
             }
         });

@@ -8,6 +8,8 @@ export interface ChartMarkerDefinition {
     type: 'chart';
     elementId: string;
     prompt: string;
+    isExtended?: boolean;
+    labels?: string[];
 }
 
 export type MarkerDefinition = TextMarkerDefinition | ChartMarkerDefinition;

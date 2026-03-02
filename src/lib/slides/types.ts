@@ -18,7 +18,9 @@ export type ChartReplacement = {
     visualType: 'chart';
     slideNumber: number;
     elementId: string;
-    bars: number[];
+    values: number[];
+    isExtended?: boolean;
+    labels?: string[];
 };
 
 export type ReplacementEntry =

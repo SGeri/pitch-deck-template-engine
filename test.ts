@@ -32,7 +32,9 @@ type TableReplacement = {
 type ChartReplacement = {
     visualType: 'chart';
     elementId: string;
-    bars: number[];
+    values: number[];
+    isExtended?: boolean;
+    labels?: string[];
 };
 
 type ReplacementEntry = TextReplacement | TableReplacement | ChartReplacement;
@@ -76,7 +78,7 @@ const REPLACEMENTS: ReplacementData = {
         {
             visualType: 'chart',
             elementId: 'EC90D3EF-7833-E7B6-6628-3A749A1911CA',
-            bars: [100, 200, 150, 120],
+            values: [100, 200, 150, 120],
         },
     ],
 };
@@ -101,11 +103,14 @@ const mapMatrixToTableData = (matrix: MatrixValue[][]) => {
     };
 };
 
-const mapBarsToChartData = (bars: number[]) => {
+const mapCategoriesToChartData = (
+    values: number[],
+    labels?: string[],
+) => {
     return {
         series: [{ label: 'Series 1' }],
-        categories: bars.map((value, index) => ({
-            label: `Bar ${index + 1}`,
+        categories: values.map((value, index) => ({
+            label: labels?.[index] ?? `Category ${index + 1}`,
             values: [value],
         })),
     };
@@ -195,11 +200,15 @@ const run = async () => {
                     continue;
                 }
 
-                slide.modifyElement(selector, [
-                    ModifyChartHelper.setChartData(
-                        mapBarsToChartData(replacement.bars),
-                    ),
-                ]);
+                const chartData = mapCategoriesToChartData(
+                    replacement.values,
+                    replacement.labels,
+                );
+                const chartModifier = replacement.isExtended
+                    ? ModifyChartHelper.setExtendedChartData(chartData)
+                    : ModifyChartHelper.setChartData(chartData);
+
+                slide.modifyElement(selector, [chartModifier]);
                 totalAppliedReplacements += 1;
             }
         });
