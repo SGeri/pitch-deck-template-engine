@@ -63,16 +63,50 @@ function mapMatrixToTableData(matrix: MatrixValue[][]) {
     };
 }
 
-function mapCategoriesToChartData(
-    values: number[],
-    labels?: string[],
-) {
+function mapCategoriesToChartData(values: number[], labels?: string[]) {
     return {
         series: [{ label: 'Series 1' }],
         categories: values.map((value, index) => ({
             label: labels?.[index] ?? `Category ${index + 1}`,
             values: [value],
         })),
+    };
+}
+
+/**
+ * Minimal value-only modifier for chartEx (waterfall / extended) charts.
+ * Updates numeric point values in both the chart XML (`cx:numDim`) and the
+ * embedded workbook without touching labels, formulas, series structure,
+ * table metadata, or any other formatting -- so the original template
+ * layout is fully preserved.
+ */
+function updateExtendedChartValues(
+    values: number[],
+): ReturnType<typeof ModifyChartHelper.setExtendedChartData> {
+    return (_element, chart, workbook) => {
+        if (!chart || !workbook) return;
+
+        const numDimElements = chart.getElementsByTagName('cx:numDim');
+        for (let d = 0; d < numDimElements.length; d++) {
+            const pts = numDimElements[d].getElementsByTagName('cx:pt');
+            for (let i = 0; i < pts.length && i < values.length; i++) {
+                pts[i].textContent = String(values[i]);
+            }
+        }
+
+        const rows = workbook.sheet.getElementsByTagName('row');
+        let valueIdx = 0;
+        for (let r = 0; r < rows.length && valueIdx < values.length; r++) {
+            const cells = rows[r].getElementsByTagName('c');
+            for (let c = 0; c < cells.length; c++) {
+                if (cells[c].getAttribute('t') === 's') continue;
+                const v = cells[c].getElementsByTagName('v')[0];
+                if (v) {
+                    v.textContent = String(values[valueIdx]);
+                    valueIdx++;
+                }
+            }
+        }
     };
 }
 
@@ -151,13 +185,14 @@ export async function generatePresentation({
                     continue;
                 }
 
-                const chartData = mapCategoriesToChartData(
-                    replacement.values,
-                    replacement.labels,
-                );
                 const chartModifier = replacement.isExtended
-                    ? ModifyChartHelper.setExtendedChartData(chartData)
-                    : ModifyChartHelper.setChartData(chartData);
+                    ? updateExtendedChartValues(replacement.values)
+                    : ModifyChartHelper.setChartData(
+                          mapCategoriesToChartData(
+                              replacement.values,
+                              replacement.labels,
+                          ),
+                      );
 
                 slide.modifyElement(selector, [chartModifier]);
                 totalApplied += 1;
