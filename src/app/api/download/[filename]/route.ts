@@ -2,8 +2,9 @@ import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import { NextResponse } from 'next/server';
+import { getGeneratedOutputDir } from '@/lib/runtime/paths';
 
-const OUTPUT_DIR = path.join(process.cwd(), 'generated');
+const OUTPUT_DIR = getGeneratedOutputDir();
 const SAFE_FILENAME = /^[\w-]+\.pptx$/;
 
 export async function GET(

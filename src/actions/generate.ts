@@ -1,19 +1,19 @@
 'use server';
 
 import { mkdir } from 'node:fs/promises';
-import path from 'node:path';
 
 import {
     assembleReplacements,
     generateAllContent,
 } from '@/lib/content/generator';
+import { getGeneratedOutputDir } from '@/lib/runtime/paths';
 import { generatePresentation } from '@/lib/slides/engine';
 import { WORKFLOW_REGISTRY } from '@/lib/workflows/registry';
 import type { DataSourceInput } from '@/lib/workflows/types';
 
 import { getWorkflowMetadata } from './workflows';
 
-const OUTPUT_DIR = path.join(process.cwd(), 'generated');
+const OUTPUT_DIR = getGeneratedOutputDir();
 
 export interface GenerationResult {
     filename: string;
